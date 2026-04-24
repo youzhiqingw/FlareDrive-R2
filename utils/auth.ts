@@ -40,7 +40,9 @@ export function get_allow_list(context) {
 }
 
 export function get_auth_status(context) {
-  const dopath = context.request.url.split("/api/write/items/")[1];
+  const url = new URL(context.request.url);
+  const pathMatch = url.pathname.match(/\/api\/write\/items\/(.*)/);
+  const dopath = pathMatch ? pathMatch[1] : null;
   if (!dopath) return false;
   return can_access_path(context, dopath);
 }

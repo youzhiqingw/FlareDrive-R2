@@ -364,7 +364,7 @@ export default {
       }
 
       /** @type File **/
-      const { basedir, file } = this.uploadQueue.pop(0);
+      const { basedir, file } = this.uploadQueue.shift();
       let thumbnailDigest = null;
 
       if (file.type.startsWith("image/") || file.type === "video/mp4") {
@@ -514,7 +514,9 @@ export default {
 
               // 更新进度
               processedItems++;
-              this.uploadProgress = (processedItems / totalItems) * 100;
+              if (totalItems > 0) {
+                this.uploadProgress = (processedItems / totalItems) * 100;
+              }
             } catch (error) {
               console.error(`移动 ${item.key} 失败:`, error);
             }
